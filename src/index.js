@@ -15,12 +15,10 @@ function Register(props) {
   //   const [email, setEmail] = React.useState('');
   //   const [password, setPassword] = React.useState('');
 
-  const { handleChange, values } = useFormValidation(INITIAL_STATE);
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    console.log('authenticated!', values.email, values.password);
-  }
+  const { handleSubmit, handleChange, handleBlur, values, errors, isSubmitting } = useFormValidation(
+    INITIAL_STATE,
+    validateAuth
+  );
 
   return (
     <div className="container">
@@ -28,20 +26,29 @@ function Register(props) {
       <form onSubmit={handleSubmit}>
         <input
           onChange={handleChange}
+          onBlur={handleBlur}
           name="email"
           value={values.email}
+          className={errors.email && 'error-input'}
           autoComplete="off"
           placeholder="Enter email address"
         />
+        {errors.email && <p className="error-text">{errors.email}</p>}
+
         <input
           onChange={handleChange}
+          onBlur={handleBlur}
           name="password"
           type="password"
           value={values.password}
+          className={errors.password && 'error-input'}
           placeholder="Enter password"
         />
+        {errors.password && <p className="error-text">{errors.password}</p>}
         <div>
-          <button type="submit">Submit</button>
+          <button disabled={isSubmitting} type="submit">
+            Submit
+          </button>
         </div>
       </form>
     </div>
